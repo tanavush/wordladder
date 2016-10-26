@@ -1,0 +1,57 @@
+import json
+import os
+import sys
+import string
+import collections
+from pprint import pprint
+
+with open('dict.json', 'r', encoding='utf-8', errors='ignore') as data:
+	d=json.load(data)
+
+print('\nEnter start word: ')
+word = input()
+print('\nEnter end word: ')
+wordend = input()
+
+
+while(word != wordend):
+	listA = list()
+	listB = list()
+	listC = list()
+	i=0
+
+	for key,values in d.items():
+		if (len(word) == len(key)):
+			listA.insert(i,key)
+			i += 1
+
+	#hamming distance
+	distance = len([i for i in range(len(word)) if word[i] != wordend[i]])
+	#print('\nHamming distance: ')
+	#print(distance)
+
+	match = {}
+	for j in range(len(word)):
+		temp = list(word)
+		if(temp[j] != wordend[j]):
+			temp[j] = wordend[j]
+			temp = ''.join(temp)
+			match[j] = temp	
+
+	for key,values in match.items():
+		listB.insert(i,values)
+		i += 1
+
+	listC = [x.upper() for x in listB]
+
+	c = [item for item in listC if item in listA]
+	print('\n')
+	print(c[0])
+	
+	word = c[0]
+	wordend = wordend
+
+	match.clear()
+	del listB[:]
+	del listC[:]
+
