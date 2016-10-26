@@ -2,24 +2,26 @@ import json
 import os
 import sys
 import string
-import collections
-from pprint import pprint
 
+#dictionary open
 with open('dict.json', 'r', encoding='utf-8', errors='ignore') as data:
 	d=json.load(data)
 
-print('\nEnter start word: ')
+#user input
+print('\nEnter start word (BLOCK LETTERS): ')
 word = input()
-print('\nEnter end word: ')
+print('\nEnter end word (BLOCK LETTERS): ')
 wordend = input()
 
 
+#loop until start word not equal to end word
 while(word != wordend):
 	listA = list()
 	listB = list()
 	listC = list()
 	i=0
-
+	
+	#words list of length equal to start word
 	for key,values in d.items():
 		if (len(word) == len(key)):
 			listA.insert(i,key)
@@ -27,9 +29,9 @@ while(word != wordend):
 
 	#hamming distance
 	distance = len([i for i in range(len(word)) if word[i] != wordend[i]])
-	#print('\nHamming distance: ')
-	#print(distance)
-
+	print('\nHamming distance: ', distance)
+	
+	#created dictionary to store words by swapping one character
 	match = {}
 	for j in range(len(word)):
 		temp = list(word)
@@ -37,20 +39,24 @@ while(word != wordend):
 			temp[j] = wordend[j]
 			temp = ''.join(temp)
 			match[j] = temp	
-
+	
+	#stored dictionary values into list
 	for key,values in match.items():
 		listB.insert(i,values)
 		i += 1
-
+	
 	listC = [x.upper() for x in listB]
 
+	#stored those words of listB which are in dictionary
 	c = [item for item in listC if item in listA]
 	print('\n')
 	print(c[0])
 	
+	#first word of c becomes the start word now, end word obv is same
 	word = c[0]
 	wordend = wordend
-
+	
+	#cleared everything
 	match.clear()
 	del listB[:]
 	del listC[:]
